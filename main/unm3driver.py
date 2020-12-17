@@ -488,11 +488,12 @@ class Nm3:
         timeout_time = timeout_helper.get_timeout_time(Nm3.RESPONSE_TIMEOUT)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
             resp_bytes = self._input_stream.read()
-            for b in resp_bytes:
-                if response_parser.process(b):
-                    # Got a response
-                    awaiting_response = False
-                    break
+            if resp_bytes:
+                for b in resp_bytes:
+                    if response_parser.process(b):
+                        # Got a response
+                        awaiting_response = False
+                        break
 
         if not response_parser.has_response():
             return -1
@@ -537,11 +538,12 @@ class Nm3:
         timeout_time = timeout_helper.get_timeout_time(Nm3.RESPONSE_TIMEOUT)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
             resp_bytes = self._input_stream.read()
-            for b in resp_bytes:
-                if response_parser.process(b):
-                    # Got a response
-                    awaiting_response = False
-                    break
+            if resp_bytes:
+                for b in resp_bytes:
+                    if response_parser.process(b):
+                        # Got a response
+                        awaiting_response = False
+                        break
 
         if not response_parser.has_response():
             return -1
@@ -580,11 +582,12 @@ class Nm3:
         timeout_time = timeout_helper.get_timeout_time(Nm3.RESPONSE_TIMEOUT)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
             resp_bytes = self._input_stream.read()
-            for b in resp_bytes:
-                if response_parser.process(b):
-                    # Got a response
-                    awaiting_response = False
-                    break
+            if resp_bytes:
+                for b in resp_bytes:
+                    if response_parser.process(b):
+                        # Got a response
+                        awaiting_response = False
+                        break
 
         if not response_parser.has_response():
             return -1
@@ -635,11 +638,12 @@ class Nm3:
         timeout_time = timeout_helper.get_timeout_time(Nm3.RESPONSE_TIMEOUT)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
             resp_bytes = self._input_stream.read()
-            for b in resp_bytes:
-                if response_parser.process(b):
-                    # Got a response
-                    awaiting_response = False
-                    break
+            if resp_bytes:
+                for b in resp_bytes:
+                    if response_parser.process(b):
+                        # Got a response
+                        awaiting_response = False
+                        break
 
         if not response_parser.has_response():
             return -1
@@ -657,11 +661,12 @@ class Nm3:
         timeout_time = timeout_helper.get_timeout_time(timeout)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
             resp_bytes = self._input_stream.read()
-            for b in resp_bytes:
-                if response_parser.process(b):
-                    # Got a response
-                    awaiting_response = False
-                    break
+            if resp_bytes:
+                for b in resp_bytes:
+                    if response_parser.process(b):
+                        # Got a response
+                        awaiting_response = False
+                        break
 
         if not response_parser.has_response():
             return -1
@@ -711,11 +716,12 @@ class Nm3:
         timeout_time = timeout_helper.get_timeout_time(Nm3.RESPONSE_TIMEOUT)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
             resp_bytes = self._input_stream.read()
-            for b in resp_bytes:
-                if response_parser.process(b):
-                    # Got a response
-                    awaiting_response = False
-                    break
+            if resp_bytes:
+                for b in resp_bytes:
+                    if response_parser.process(b):
+                        # Got a response
+                        awaiting_response = False
+                        break
 
         if not response_parser.has_response():
             return -1
@@ -767,11 +773,12 @@ class Nm3:
         timeout_time = timeout_helper.get_timeout_time(Nm3.RESPONSE_TIMEOUT)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
             resp_bytes = self._input_stream.read()
-            for b in resp_bytes:
-                if response_parser.process(b):
-                    # Got a response
-                    awaiting_response = False
-                    break
+            if resp_bytes:
+                for b in resp_bytes:
+                    if response_parser.process(b):
+                        # Got a response
+                        awaiting_response = False
+                        break
 
         if not response_parser.has_response():
             return -1
@@ -826,11 +833,12 @@ class Nm3:
         timeout_time = timeout_helper.get_timeout_time(Nm3.RESPONSE_TIMEOUT)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
             resp_bytes = self._input_stream.read()
-            for b in resp_bytes:
-                if response_parser.process(b):
-                    # Got a response
-                    awaiting_response = False
-                    break
+            if resp_bytes:
+                for b in resp_bytes:
+                    if response_parser.process(b):
+                        # Got a response
+                        awaiting_response = False
+                        break
 
         if not response_parser.has_response():
             return -1
@@ -849,11 +857,12 @@ class Nm3:
         timeout_time = timeout_helper.get_timeout_time(timeout)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
             resp_bytes = self._input_stream.read()
-            for b in resp_bytes:
-                if response_parser.process(b):
-                    # Got a response
-                    awaiting_response = False
-                    break
+            if resp_bytes:
+                for b in resp_bytes:
+                    if response_parser.process(b):
+                        # Got a response
+                        awaiting_response = False
+                        break
 
         if not response_parser.has_response():
             return -1
