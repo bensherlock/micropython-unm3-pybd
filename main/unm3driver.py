@@ -397,8 +397,8 @@ class Nm3ResponseParser:
 
             if (bytes([next_byte]).decode('utf-8') == '#') or (bytes([next_byte]).decode('utf-8') == '$'):
                 # Next state
-                self._current_bytes = []
-                self._current_byte_counter = 0
+                self._current_bytes = [next_byte]  # be sure to include the # or $ in the response
+                self._current_byte_counter = 1
                 self._parser_state = self.PARSERSTATE_STRING
 
         elif self._parser_state == self.PARSERSTATE_STRING:
@@ -469,7 +469,6 @@ class Nm3:
 
         # Absorb any incoming bytes into the receive buffers to process later
         self.poll_receiver()
-
 
         response_parser = Nm3ResponseParser()
         timeout_helper = TimeoutHelper()
