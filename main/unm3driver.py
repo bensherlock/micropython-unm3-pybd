@@ -632,13 +632,21 @@ class Nm3:
             return -1
 
         # Await the response
+        # Micropython needs a defined size of deque
+        resp_bytes = deque((), 40)  # Create the queue object for first response
         response_parser.reset()
         awaiting_response = True
         timeout_time = timeout_helper.get_timeout_time(Nm3.RESPONSE_TIMEOUT)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
-            resp_bytes = self._input_stream.read()
+            resp = self._input_stream.read()
+
+            if resp:
+                for b in resp:
+                    resp_bytes.append(b)  # Append the bytes to the queue
+
             if resp_bytes:
-                for b in resp_bytes:
+                while resp_bytes:
+                    b = resp_bytes.popleft()
                     if response_parser.process(b):
                         # Got a response
                         awaiting_response = False
@@ -659,9 +667,15 @@ class Nm3:
         awaiting_response = True
         timeout_time = timeout_helper.get_timeout_time(timeout)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
-            resp_bytes = self._input_stream.read()
+            resp = self._input_stream.read()
+
+            if resp:
+                for b in resp:
+                    resp_bytes.append(b)  # Append the bytes to the queue
+
             if resp_bytes:
-                for b in resp_bytes:
+                while resp_bytes:
+                    b = resp_bytes.popleft()
                     if response_parser.process(b):
                         # Got a response
                         awaiting_response = False
@@ -827,13 +841,21 @@ class Nm3:
             return -1
 
         # Await the response
+        # Micropython needs a defined size of deque
+        resp_bytes = deque((), 40)  # Create the queue object for first response
         response_parser.reset()
         awaiting_response = True
         timeout_time = timeout_helper.get_timeout_time(Nm3.RESPONSE_TIMEOUT)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
-            resp_bytes = self._input_stream.read()
+            resp = self._input_stream.read()
+
+            if resp:
+                for b in resp:
+                    resp_bytes.append(b)  # Append the bytes to the queue
+
             if resp_bytes:
-                for b in resp_bytes:
+                while resp_bytes:
+                    b = resp_bytes.popleft()
                     if response_parser.process(b):
                         # Got a response
                         awaiting_response = False
@@ -845,6 +867,7 @@ class Nm3:
 
         # Expecting '$M12300\r\n' 9 bytes
         resp_string = response_parser.get_last_response_string()
+        # print("resp_string: " + resp_string)
         if not resp_string or len(resp_string) < 7:  # E
             return -1
 
@@ -855,9 +878,15 @@ class Nm3:
         awaiting_response = True
         timeout_time = timeout_helper.get_timeout_time(timeout)
         while awaiting_response and not timeout_helper.is_timedout(timeout_time):
-            resp_bytes = self._input_stream.read()
+            resp = self._input_stream.read()
+
+            if resp:
+                for b in resp:
+                    resp_bytes.append(b)  # Append the bytes to the queue
+
             if resp_bytes:
-                for b in resp_bytes:
+                while resp_bytes:
+                    b = resp_bytes.popleft()
                     if response_parser.process(b):
                         # Got a response
                         awaiting_response = False
@@ -868,6 +897,7 @@ class Nm3:
 
         # Expecting '#R255T12345\r\n' or '#TO\r\n' 13 or 5 bytes
         resp_string = response_parser.get_last_response_string()
+        # print("resp_string: " + resp_string)
         if not resp_string or len(resp_string) < 11: # TO
             return -1
 
