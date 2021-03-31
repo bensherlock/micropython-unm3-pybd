@@ -456,13 +456,11 @@ class Nm3:
         self._input_stream = input_stream
         self._output_stream = output_stream
         # Micropython needs a defined size of deque
-        self._incoming_bytes_buffer = deque((), 300) # List/Deque of integers
+        self._incoming_bytes_buffer = deque((), 300)  # List/Deque of integers
         self._received_packet_parser = MessagePacketParser()
-
 
     def __call__(self):
         return self
-
 
     def get_address(self) -> int:
         """Gets the NM3 Address (000-255)."""
@@ -499,14 +497,13 @@ class Nm3:
 
         # Expecting '#A255V21941\r\n'
         resp_string = response_parser.get_last_response_string()
-        if not resp_string or len(resp_string) < 5:
+        if not resp_string or len(resp_string) < 5 or resp_string[0:2] != '#A':
             return -1
 
         addr_string = resp_string[2:5]
         addr_int = int(addr_string)
 
         return addr_int
-
 
     def set_address(self,
                     address: int) -> int:
@@ -549,14 +546,12 @@ class Nm3:
 
         # Expecting '#A255\r\n' 7 bytes
         resp_string = response_parser.get_last_response_string()
-        if not resp_string or len(resp_string) < 5:
+        if not resp_string or len(resp_string) < 5 or resp_string[0:2] != '#A':
             return -1
 
         addr_string = resp_string[2:5]
         addr_int = int(addr_string)
-
         return addr_int
-
 
     def get_battery_voltage(self) -> float:
         """Gets the NM3 Battery Voltage."""
@@ -593,7 +588,7 @@ class Nm3:
 
         # Expecting '#A255V21941\r\n'
         resp_string = response_parser.get_last_response_string()
-        if not resp_string or len(resp_string) < 11:
+        if not resp_string or len(resp_string) < 11 or resp_string[0:2] != '#A':
             return -1
 
         adc_string = resp_string[6:11]
@@ -601,9 +596,7 @@ class Nm3:
 
         # Convert the ADC value to a float voltage. V = adc_int * 15 / 65536.
         voltage = float(adc_int) * 15.0 / 65536.0
-
         return voltage
-
 
     def send_ping(self,
                   address: int,
@@ -657,9 +650,8 @@ class Nm3:
 
         # Expecting '$P255\r\n' 7 bytes
         resp_string = response_parser.get_last_response_string()
-        if not resp_string or len(resp_string) < 5:  # E
+        if not resp_string or len(resp_string) < 5 or resp_string[0:2] != '$P':  # E
             return -1
-
 
         # Now await the range or TO after 4 seconds
         # Await the response
@@ -686,7 +678,7 @@ class Nm3:
 
         # Expecting '#R255T12345\r\n' or '#TO\r\n' 13 or 5 bytes
         resp_string = response_parser.get_last_response_string()
-        if not resp_string or len(resp_string) < 11: # TO
+        if not resp_string or len(resp_string) < 11 or resp_string[0:2] != '#R':  # TO
             return -1
 
         time_string = resp_string[6:11]
@@ -694,9 +686,7 @@ class Nm3:
 
         # Convert the time value to a float seconds. T = time_int * 31.25E-6.
         time = float(time_int) * 31.25E-6
-
         return time
-
 
     def send_broadcast_message(self,
                                message_bytes: bytes) -> int:
@@ -713,7 +703,6 @@ class Nm3:
 
         response_parser = Nm3ResponseParser()
         timeout_helper = TimeoutHelper()
-
 
         # Write the command to the serial port
         cmd_string = '$B' + '{:02d}'.format(len(message_bytes))
@@ -743,12 +732,10 @@ class Nm3:
 
         # Check that it has received all the expected bytes. Return error if not.
         resp_string = response_parser.get_last_response_string()
-        if not resp_string or len(resp_string) < 4:
+        if not resp_string or len(resp_string) < 4 or resp_string[0:2] != '$B':
             return -1
 
-
         return len(message_bytes)
-
 
     def send_unicast_message(self,
                              address: int,
@@ -770,7 +757,6 @@ class Nm3:
 
         response_parser = Nm3ResponseParser()
         timeout_helper = TimeoutHelper()
-
 
         # Write the command to the serial port
         cmd_string = '$U' + '{:03d}'.format(address) + '{:02d}'.format(len(message_bytes))
@@ -800,13 +786,11 @@ class Nm3:
 
         # Check that it has received all the expected bytes. Return error if not.
         resp_string = response_parser.get_last_response_string()
-        if not resp_string or len(resp_string) < 7:
+        if not resp_string or len(resp_string) < 7 or resp_string[0:2] != '$U':
             return -1
 
         # If the address is invalid then returns 'E\r\n'
-
         return len(message_bytes)
-
 
     def send_unicast_message_with_ack(self,
                                       address: int,
@@ -830,7 +814,6 @@ class Nm3:
 
         response_parser = Nm3ResponseParser()
         timeout_helper = TimeoutHelper()
-
 
         # Write the command to the serial port
         cmd_string = '$M' + '{:03d}'.format(address) + '{:02d}'.format(len(message_bytes))
@@ -864,13 +847,11 @@ class Nm3:
         if not response_parser.has_response():
             return -1
 
-
         # Expecting '$M12300\r\n' 9 bytes
         resp_string = response_parser.get_last_response_string()
         # print("resp_string: " + resp_string)
-        if not resp_string or len(resp_string) < 7:  # E
+        if not resp_string or len(resp_string) < 7 or resp_string[0:2] != '$M':  # E
             return -1
-
 
         # Now await the range or TO after 4 seconds
         # Await the response
@@ -898,7 +879,7 @@ class Nm3:
         # Expecting '#R255T12345\r\n' or '#TO\r\n' 13 or 5 bytes
         resp_string = response_parser.get_last_response_string()
         # print("resp_string: " + resp_string)
-        if not resp_string or len(resp_string) < 11: # TO
+        if not resp_string or len(resp_string) < 11 or resp_string[0:2] != '#R':  # TO
             return -1
 
         time_string = resp_string[6:11]
@@ -906,9 +887,7 @@ class Nm3:
 
         # Convert the time value to a float seconds. T = time_int * 31.25E-6.
         time = float(time_int) * 31.25E-6
-
         return time
-
 
     def poll_receiver(self):
         """Check the input_stream (non-blocking) and place bytes into incoming buffer for processing.
@@ -920,7 +899,6 @@ class Nm3:
                 self._incoming_bytes_buffer.append(a_byte)
 
             resp_bytes = self._input_stream.read()
-
 
     def process_incoming_buffer(self,
                                 max_bytes_count: int = 0) -> int:
@@ -934,23 +912,18 @@ class Nm3:
             byte_count = byte_count + 1
 
             # Check for max_bytes_count
-            if max_bytes_count > 0 and byte_count >= max_bytes_count:
+            if 0 < max_bytes_count <= byte_count:
                 return len(self._incoming_bytes_buffer)
-
 
         return len(self._incoming_bytes_buffer)
 
-
     def has_received_packet(self) -> bool:
         """Has received packet in the queue."""
-
         return self._received_packet_parser.has_packet()
-
 
     def get_received_packet(self) -> MessagePacket:
         """Gets the next received packet or None if the queue is empty.
         """
-
         return self._received_packet_parser.get_packet()
 
 
